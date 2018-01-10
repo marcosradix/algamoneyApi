@@ -12,4 +12,5 @@ estado VARCHAR(20)
 
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---INSERT INTO pessoa()
+INSERT INTO pessoa(nome, ativo, logradouro, numero, complemento, bairro, cep, cidade, estado)
+values ("Marcos", true, "rua dos coelhos", "115", "B","Maraponga","60710705","Fortaleza","Ceará");
