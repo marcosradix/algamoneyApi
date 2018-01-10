@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -24,15 +26,24 @@ public class AlgamoneyExceptionHandler extends ResponseEntityExceptionHandler{
 	@Autowired
 	private MessageSource messageSource;
 	@Override
+	//quando não pode ler as propriedades passadas, exemplo {"nome":"ok"} ou quando não existe
 	protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
-		
 		String mensagemUsuario = messageSource.getMessage("mensagem.invalida", null, LocaleContextHolder.getLocale());
 		String mensagemDesenvolvedor = ex.getCause().toString();
 		List<Erro> erros = Arrays.asList(new Erro(mensagemUsuario, mensagemDesenvolvedor));
 		return handleExceptionInternal(ex, erros, headers, HttpStatus.BAD_REQUEST, request);	
 	}
 	
+	//método criado para tratar um exception baseado na class da mesma
+	@ExceptionHandler({EmptyResultDataAccessException.class})
+	public ResponseEntity<Object> handleEmptyResultDataAccessException(EmptyResultDataAccessException ex, WebRequest request) {
+		String mensagemUsuario = messageSource.getMessage("recurso.nao-encontrado", null, LocaleContextHolder.getLocale());
+		String mensagemDesenvolvedor = ex.toString();
+		List<Erro> erros = Arrays.asList(new Erro(mensagemUsuario, mensagemDesenvolvedor));
+		return handleExceptionInternal(ex, erros, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+		
+	}
 	
 	@Override
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
@@ -44,12 +55,9 @@ public class AlgamoneyExceptionHandler extends ResponseEntityExceptionHandler{
 	private List<Erro> criarListaDeErros(BindingResult getBindingResult){
 		List<Erro> erros =  new ArrayList<>();
 		for(FieldError fieldError : getBindingResult.getFieldErrors()) {
-			
-		
 		String mensagemUsuario = messageSource.getMessage(fieldError, LocaleContextHolder.getLocale());
 		String mensagemDesenvolvedor = fieldError.toString();
 		erros.add(new Erro(mensagemUsuario, mensagemDesenvolvedor));
-		
 		}
 		return erros;
 		
@@ -68,8 +76,6 @@ public class AlgamoneyExceptionHandler extends ResponseEntityExceptionHandler{
 	public String getMensagemDesenvolvedor() {
 		return mensagemDesenvolvedor;
 	}
-	
-	
 	
 }
 	
