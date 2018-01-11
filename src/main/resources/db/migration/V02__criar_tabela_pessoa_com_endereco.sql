@@ -1,7 +1,7 @@
 CREATE TABLE pessoa(
 codigo BIGINT(20) PRIMARY KEY AUTO_INCREMENT,
 nome VARCHAR(50) NOT NULL,
-ativo TINYINT(1) NOT NULL,
+ativo BOOLEAN NOT NULL,
 logradouro VARCHAR(50),
 numero VARCHAR(10),
 complemento VARCHAR(30),
@@ -14,3 +14,6 @@ estado VARCHAR(20)
 
 INSERT INTO pessoa(nome, ativo, logradouro, numero, complemento, bairro, cep, cidade, estado)
 values ("Marcos", true, "rua dos coelhos", "115", "B","Maraponga","60710705","Fortaleza","Ceará");
+
+INSERT INTO pessoa(nome, ativo, logradouro, numero, complemento, bairro, cep, cidade, estado)
+values ("Severino", false, "rua teodoro de castro", "645", "casa","Granja Portugal","60545274","Fortaleza","Ceará");
