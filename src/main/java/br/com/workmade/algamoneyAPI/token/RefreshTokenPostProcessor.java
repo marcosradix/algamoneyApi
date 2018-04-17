@@ -1,7 +1,6 @@
 package br.com.workmade.algamoneyAPI.token;
 
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -12,10 +11,10 @@ import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.http.server.ServletServerHttpResponse;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
 @ControllerAdvice
 public class RefreshTokenPostProcessor implements ResponseBodyAdvice<OAuth2AccessToken>{
@@ -50,7 +49,7 @@ public class RefreshTokenPostProcessor implements ResponseBodyAdvice<OAuth2Acces
 	}
 
 	@Override
-	public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> arg1) {
+	public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> converter) {
 		return returnType.getMethod().getName().equals("postAccessToken");
 	}
 
