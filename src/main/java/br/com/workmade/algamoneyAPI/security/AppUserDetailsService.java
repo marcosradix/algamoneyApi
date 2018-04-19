@@ -1,10 +1,13 @@
 package br.com.workmade.algamoneyAPI.security;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -29,8 +32,9 @@ public class AppUserDetailsService implements UserDetailsService {
 	}
 
 	private Collection<? extends GrantedAuthority> getPermissoes(Usuario usuario) {
-		// TODO Auto-generated method stub
-		return null;
+		Set<SimpleGrantedAuthority> authorities =  new HashSet<>();
+		usuario.getPermissoes().forEach(perm -> authorities.add(new SimpleGrantedAuthority(perm.getDescricao().toUpperCase())));
+		return authorities;
 	}
 
 }

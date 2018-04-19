@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +30,7 @@ import br.com.workmade.algamoneyAPI.exceptionHandler.AlgamoneyExceptionHandler.E
 import br.com.workmade.algamoneyAPI.model.Lancamento;
 import br.com.workmade.algamoneyAPI.repository.LancamentoRepository;
 import br.com.workmade.algamoneyAPI.repository.filter.LancamentoFilter;
+import br.com.workmade.algamoneyAPI.repository.projection.ResumoLancamento;
 import br.com.workmade.algamoneyAPI.service.LancamentoService;
 import br.com.workmade.algamoneyAPI.service.exception.PessoaInexistenteOuInativaException;
 
@@ -48,16 +50,25 @@ public class LancamentoController {
 	private MessageSource messageSource;
 
 	@GetMapping
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_LANCAMENTO') and #oauth2.hasScope('read')")
 	public Page<Lancamento> pesquisar(LancamentoFilter lancamentoFilter, Pageable pageable) {
 		return this.lancamentoRepository.filtrar(lancamentoFilter, pageable);
 	}
 
+	@GetMapping(params = "resumo")
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_LANCAMENTO') and #oauth2.hasScope('read')")
+	public Page<ResumoLancamento> resumir(LancamentoFilter lancamentoFilter, Pageable pageable) {
+		return this.lancamentoRepository.resumir(lancamentoFilter, pageable);
+	}
+	
 	@GetMapping("/{codigo}")
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_LANCAMENTO') and #oauth2.hasScope('read')")
 	public Lancamento buscarPeloCodigo(@PathVariable Long codigo) {
 		return lancamentoRepository.findOne(codigo);
 	}
 
 	@PostMapping
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_LANCAMENTO') and #oauth2.hasScope('write')")
 	public ResponseEntity<Lancamento> criarLancamento(@Valid @RequestBody Lancamento lancamento,
 			HttpServletResponse response) {
 		Lancamento lancamentoSalvo = lancamentoService.salvar(lancamento);
