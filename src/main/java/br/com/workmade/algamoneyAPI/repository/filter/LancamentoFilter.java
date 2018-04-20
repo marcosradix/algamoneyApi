@@ -13,6 +13,8 @@ public class LancamentoFilter {
 	
 	@DateTimeFormat(pattern= "yyyy-MM-dd")
 	private LocalDate dataVencimentoAte;
+	
+	
 	public String getDescricao() {
 		return descricao;
 	}

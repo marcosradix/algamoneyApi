@@ -7,8 +7,11 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.workmade.algamoneyAPI.event.RecursoCriadoEvento;
 import br.com.workmade.algamoneyAPI.model.Pessoa;
 import br.com.workmade.algamoneyAPI.repository.PessoaRepository;
+import br.com.workmade.algamoneyAPI.repository.filter.PessoaFilter;
 import br.com.workmade.algamoneyAPI.service.PessoaService;
 @RestController
 @RequestMapping("/pessoas")
@@ -41,6 +45,15 @@ public class PessoaController {
 		return this.pessoaRepository.findAll();
 	}
 
+	
+	@GetMapping(params = "resumo")
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_PESSOA') and #oauth2.hasScope('read')")
+	public Page<Pessoa> resumir(PessoaFilter pessoaFilter, Pageable pageable) {
+		return this.pessoaRepository.filtrar(pessoaFilter, pageable);
+	}
+
+	
+	
 	@PostMapping
 	public ResponseEntity<Pessoa> criarCategoria(@Valid @RequestBody Pessoa pessoa, HttpServletResponse response) {
 		Pessoa pessoaSalva = pessoaRepository.save(pessoa);
