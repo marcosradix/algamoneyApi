@@ -17,3 +17,6 @@ values ("Marcos", true, "rua dos coelhos", "115", "B","Maraponga","60710705","Fo
 
 INSERT INTO pessoa(nome, ativo, logradouro, numero, complemento, bairro, cep, cidade, estado)
 values ("Severino", false, "rua teodoro de castro", "645", "casa","Granja Portugal","60545274","Fortaleza","Ceará");
+
+INSERT INTO pessoa(nome, ativo, logradouro, numero, complemento, bairro, cep, cidade, estado)
+values ("Ferreira", false, "rua das oiticicas", "40", null,"Granja Lisboa","60710705","Guagirú","São Paulo");
