@@ -6,7 +6,7 @@
 	<groupId>br.com.workmade.algamoneyAPI</groupId>
 	<artifactId>algamoneyAPI</artifactId>
 	<version>1.0</version>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 
 	<name>algamoneyAPI</name>
 	<description>webservice spring boot</description>
@@ -33,13 +33,19 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
-			<!--  <exclusions>
+			 <exclusions>
             	<exclusion>
-            	para rodar o wilfly
+            	<!-- para rodar o wilfly -->
                   <groupId>org.springframework.boot</groupId>
                   <artifactId>spring-boot-starter-tomcat</artifactId>
               </exclusion>
-            </exclusions> -->
+            </exclusions>
+		</dependency>
+		
+		<!-- dependencia necessária para wildfly -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-undertow</artifactId>
 		</dependency>
 		
 		<dependency>

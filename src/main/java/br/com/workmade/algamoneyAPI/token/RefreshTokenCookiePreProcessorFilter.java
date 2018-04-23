@@ -2,6 +2,7 @@ package br.com.workmade.algamoneyAPI.token;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.TreeMap;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -13,7 +14,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 
-import org.apache.catalina.util.ParameterMap;
+//import org.apache.catalina.util.ParameterMap;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -63,9 +64,9 @@ public class RefreshTokenCookiePreProcessorFilter implements Filter {
 		}
 		@Override
 		public Map<String, String[]> getParameterMap() {
-			ParameterMap<String, String[]> map = new ParameterMap<>(getRequest().getParameterMap());
+			Map<String, String[]> map = new TreeMap<>(getRequest().getParameterMap());
 			map.put("refresh_token", new String[] {refreshToken} );
-			map.setLocked(true);
+			//map.setLocked(true);
 			return map;
 		}
 	}
